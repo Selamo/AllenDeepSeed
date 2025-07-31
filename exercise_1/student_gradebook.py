@@ -1,83 +1,101 @@
+# ===== STUDENT GRADE MANAGER =====
 gradebook ={}
 
-def student_stacts(choice, name, grade):
-    print("""
-    1. Add Student
-    2. Add Grade
-    3. View Student Report
-    4. Class Statistics
-    5. Exit
-        """)
-    
-    while True:
-        choice = int(input("Enter the option"))
-        if choice == 5:
-            break
-
-        elif choice == 1:
-            add_student()
-        elif choice == 2:
-            add_grade()
-        elif choice == 3:
-            view_report()
-        elif choice == 4:
-            view_statistics()
-            
-        # if name not in gradebook:
-        #     if name.strip().lower() == "exit":
-
-        #     gradebook[name] = {}
-        #     print(f"Student {name} added")
-        # else:
-        #     print(f"Name already exist")
-        # break
-def add_student(student_name):
-    if student_name not in gradebook:
-        gradebook[student_name] = {}
-        print(f"Student {student_name} added")
-    else:
-        print(f"Student Already exist")
-
-
-def add_grade(name, subject,grade):
-    # name = input(f"Enter the User name for the grade to be added")
+def add_student():
+    name = input("Enter student name: ").strip()
     if name in gradebook:
-        gradebook[name][subject] = grade
-        print(f"The grade of {name} has been added")
-
-
-def calculate_average(name):
-    if name in gradebook and gradebook[name]:
-       grades = int(list(gradebook[name].values()))
-       average = sum(grades)/len(grades)
-       return average
-
-# add_student("Allen")
-# add_grade("Allen", "Maths", "30")
-# add_grade("Allen", "chem", "60")
-# calculate_average("Allen")
-
-def view_report(name):
-    name = input("Enter the studentto view his/her Report")
-    calculate_average(name)
-    if calculate_average(name) >= 90:
-        grade = "A"
-    elif calculate_average(name) >= 80:
-        grade = "B"
-    elif calculate_average(name) >= 70:
-        grade = "C"
-    elif calculate_average(name) >= 60:
-        grade = "D"
+        print("Student already exits.")
     else:
-        grade = "F"
-    print("{name} average is: {calculate_average} (Grade: {grade}") 
+        gradebook[name] = []
+        print(f"Added student: {name}")
+#Function to calculate average grade
+def calculate_average(grades):
+    return sum(grades) / len(grades) if grades else 0
 
-    pass
+#Function to determine grade
+def get_letter_grade(average):
+    if average>= 90:
+        return 'A'
+    elif average >= 80:
+        return 'B'
+    elif average >=70:
+        return 'C'
+    elif average >= 60:
+        return 'D'
+    else:
+        return 'F'
+#Function to display menu  
+def show_menu():
+    print("\n=== STUDENT GRADEBOOK MANAGER ===")
+    print("1. Add Student")
+    print("2. Add Grades")
+    print("3. View Student Report")
+    print("4. Class Statistics")
+    print("5. Exit")
 
+#Function to add a new student
+def add_grade():
+    name = input("Enter the name of the Student: ").strip()
+    if name in gradebook:
+        grades_input = input("Enter grades of the student: ")
+        try:
+            grades = [float(g.strip()) for g in grades_input.split(',') if g.split()]
+            invalid = [g for g in grades if not (0 <= g <= 100)]
+            if invalid:
+                print(f"These grades are out of range: {invalid}")
+                return gradebook[name].extend(grades)
+            print(f"Added grades Successfully to {name}")
+        except ValueError:
+            print("Invalid input. YOur numbers should be separated by commas")
+        else:
+            print(f"Student not found")
 
-def view_statistics():
-    pass
+# Function to view students report
+def view_student_report():
+    name = input("Enter Student name: ").strip()
+    if name in gradebook:
+        grades = gradebook[name]
+        if grades:
+            average = calculate_average(grades)
+            grading = get_letter_grade(average)
+            print(f"{name}'s Average: {average} (Grade: {grading})")
+            print(f"Grades: {grades}")
+        else:
+            print(f"{name} has no grades")
+    else:
+        print(f"Student not found.")
 
-
-
-# student_stacts("Alice", 2)
+#Function to display class statistics
+def class_statistics():
+    if not gradebook:
+        print("No Students in the gradebook")
+        return 
+    all_averages = {}
+    for student, grades in gradebook.items():
+        if grades:
+            all_averages[student] = calculate_average(grades)
+    if not all_averages:
+        print(f"No grades available to calculate statistics.")
+        return
+    class_avg = sum(all_averages.values()) / len(all_averages)
+    highest_student = max(all_averages, key=all_averages.get)
+    lowest_student = min(all_averages, key=all_averages.get)
+    print(f"\nClass Average: {class_avg}")
+    print(f"Highest Student: {highest_student}")
+    print(f"Lowest Student: {lowest_student}")
+    while True:
+        show_menu()
+        choice = input("Choice: ").strip()
+        if choice == '1':
+            add_student()
+        elif choice == '2':
+            add_grade()
+        elif choice == '3':
+            view_student_report()
+        elif choice == '4':
+            class_statistics()
+        elif choice == '5':
+            print("Exiting program. Goodbye!")
+            break
+        else:
+            print("Invalid Choice")
