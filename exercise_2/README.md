@@ -11,6 +11,7 @@
 
 
 AN INVENTORY MANAGEMENT SYSTEM
+
 This is a store inventory with stock tracking and low-stock alerts. Making use of nested dictionaries to store the names: Which are stored in this order
 - Item Name
 - Price
