@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 
-# === CONFIG ===
+
 DATA_FILE = "budget_data.json"
 BUDGET_LIMITS = {
     "food": 400,
@@ -11,7 +11,7 @@ BUDGET_LIMITS = {
     "entertainment": 200
 }
 
-# === UTILITIES ===
+
 def load_data():
     if os.path.exists(DATA_FILE):
         with open(DATA_FILE, "r") as f:

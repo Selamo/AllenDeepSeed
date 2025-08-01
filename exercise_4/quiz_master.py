@@ -1,5 +1,4 @@
 import time
-import json
 import os
 
 # Sample Questions
@@ -54,18 +53,6 @@ questions = {
     }
 }
 
-high_scores_file = "high_scores.json"
-
-def load_high_scores():
-    if os.path.exists(high_scores_file):
-        with open(high_scores_file, "r") as file:
-            return json.load(file)
-    return {}
-
-def save_high_scores(scores):
-    with open(high_scores_file, "w") as f:
-        json.dump(scores, f, indent=2)
-
 def ask_questions(category, difficulty):
     questions_list = questions[category][difficulty]
     score = 0
@@ -102,7 +89,7 @@ def ask_questions(category, difficulty):
     print(" Total Time:", round(end - start, 2), "seconds")
 
     if wrong_answers:
-        print("\n📘 REVIEW INCORRECT ANSWERS:")
+        print("\n REVIEW INCORRECT ANSWERS:")
         for q, ans in wrong_answers:
             print(f"- {q['question']}")
             print(f"   Your answer: {ans}")
@@ -114,8 +101,6 @@ def print_progress_bar(done, total):
     percent = int((done/total) * 100)
     bar = ("█" * (percent // 10)).ljust(10, "░")
     print(f"[{bar}] {percent}% Complete")
-
-high_scores = load_high_scores()
 
 print("=== QUIZ MASTER ===")
 print("Categories:", ", ".join(questions.keys()))
@@ -130,12 +115,7 @@ if difficulty not in questions[category]:
 
 score = ask_questions(category, difficulty)
 
-    # Save personal best
-key = f"{category}_{difficulty}"
-if key not in high_scores or score > high_scores[key]:
-    print("New personal best!")
-    high_scores[key] = score
-    save_high_scores(high_scores)
+
 
 
 
