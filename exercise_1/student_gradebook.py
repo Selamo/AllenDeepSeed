@@ -47,7 +47,7 @@ def add_grade():
             print(f"Added grades Successfully to {name}")
         except ValueError:
             print("Invalid input. YOur numbers should be separated by commas")
-        else:
+    else:
             print(f"Student not found")
 
 # Function to view students report
@@ -83,7 +83,8 @@ def class_statistics():
     print(f"\nClass Average: {class_avg}")
     print(f"Highest Student: {highest_student}")
     print(f"Lowest Student: {lowest_student}")
-    while True:
+
+while True:
         show_menu()
         choice = input("Choice: ").strip()
         if choice == '1':
